@@ -50,55 +50,54 @@ class OrderController extends Controller
 		$order->save();
 
 		//send mail confirm
-	// 	$now = Carbon::now('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s');
-	// 	$title_mail = "Đơn hàng đã đặt được xác nhận".' '.$now;
-	// 	$customer = Customer::where('customer_id',$order->customer_id)->first();
-	// 	$data['email'][] = $customer->customer_email;
+		$now = Carbon::now('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s');
+		$title_mail = "Đơn hàng đã đặt được xác nhận".' '.$now;
+		$customer = Customer::where('customer_id',$order->customer_id)->first();
+		$data['email'][] = $customer->customer_email;
 
-	// 	foreach($data['order_product_id'] as $key => $product){
-	// 		$product_mail = Product::find($product);
-	// 		foreach($data['quantity'] as $key2 => $qty){
-	// 			if($key==$key2){
-	// 				$cart_array[] = array(
-	// 					'product_name' => $product_mail['product_name'],
-	// 					'product_price' => $product_mail['product_price'],
-	// 					'product_qty' => $qty
-	// 				);
+		foreach($data['order_product_id'] as $key => $product){
+			$product_mail = Product::find($product);
+			foreach($data['quantity'] as $key2 => $qty){
+				if($key==$key2){
+					$cart_array[] = array(
+						'product_name' => $product_mail['product_name'],
+						'product_price' => $product_mail['product_price'],
+						'product_qty' => $qty
+					);
 
-	// 			}
-	// 		}
-	// 	}
+				}
+			}
+		}
 
-	//   //lay shipping
-	// 	$details = OrderDetails::where('order_code',$order->order_code)->first();
-	// 	if($details->product_coupon != 'no'){
-	// 		$coupon_mail = $details->product_coupon;
-	// 	}else{
-	// 		$coupon_mail = 'Không sử dụng mã';
-	// 	}
+		$details = OrderDetails::where('order_code',$order->order_code)->first();
+		if($details->product_coupon != 'no'){
+			$coupon_mail = $details->product_coupon;
+		}else{
+			$coupon_mail = 'Không sử dụng mã';
+		}
 		
-		// $fee_ship_mail = $details->product_fee_ship;
-		// $shipping = Shipping::where('shipping_id',$order->shipping_id)->first();
-		// $shipping_array = array(
-		// 	'customer_name' => $customer->customer_name,
-		// 	'shipping_name' => $shipping->shipping_name,
-		// 	'shipping_email' => $shipping->shipping_email,
-		// 	'shipping_phone' => $shipping->shipping_phone,
-		// 	'shipping_address' => $shipping->shipping_address,
-		// 	'shipping_notes' => $shipping->shipping_notes,
-		// 	'shipping_method' => $shipping->shipping_method,
-		// 	'fee_ship' => $fee_ship_mail
-		// );
-		// //lay ma giam gia, lay coupon code
-		// $ordercode_mail = array(
-		// 	'coupon_code' => $coupon_mail,
-		// 	'order_code' => $details->order_code
-		// );
+		$fee_ship_mail = $details->product_fee_ship;
+		$shipping = Shipping::where('shipping_id',$order->shipping_id)->first();
+		$shipping_array = array(
+			'customer_name' => $customer->customer_name,
+			'shipping_name' => $shipping->shipping_name,
+			'shipping_email' => $shipping->shipping_email,
+			'shipping_phone' => $shipping->shipping_phone,
+			'shipping_address' => $shipping->shipping_address,
+			'shipping_notes' => $shipping->shipping_notes,
+			'shipping_method' => $shipping->shipping_method,
+			'fee_ship' => $fee_ship_mail
+		);
+		//Lấy mã giảm giá, Lấy coupon code
+		$ordercode_mail = array(
+			'coupon_code' => $coupon_mail,
+			'order_code' => $details->order_code
+		);
 
-		// Mail::send('admin.Mail.confirm_order',  ['cart_array'=>$cart_array, 'shipping_array'=>$shipping_array ,'code'=>$ordercode_mail] , function($message) use ($title_mail,$data){
-		// 		$message->to($data['email'])->subject($title_mail);//send this mail with subject
-		// 		$message->from($data['email'],$title_mail);//send from this mail
-		// });
+		Mail::send('admin.Mail.confirm_order',  ['cart_array'=>$cart_array, 'shipping_array'=>$shipping_array ,'code'=>$ordercode_mail] , function($message) use ($title_mail,$data){
+				$message->to($data['email'])->subject($title_mail);//send this mail with subject
+				$message->from($data['email'],$title_mail);//send from this mail
+		});
 
 		//Order date
 		$order_date = $order->order_date;	
