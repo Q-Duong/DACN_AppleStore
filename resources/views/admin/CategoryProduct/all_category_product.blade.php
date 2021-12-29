@@ -7,6 +7,8 @@
         </div>
         @if(session('success'))
             <div class="alert alert-success">{!! session('success') !!}</div>
+        @elseif(session('error'))
+            <div class="alert alert-danger">{!! session('error') !!}</div>
         @endif
         <div class="table-responsive">
             <table class="table table-striped b-t b-light" id="myTable">
@@ -20,21 +22,22 @@
                     </tr>
                 </thead>
                 <style type="text/css">
-          #category_order .ui-state-highlight
-           {
-            padding:24px;
-            background-color:#ffffcc;
-            border:1px dotted #ccc;
-            cursor:move;
-            margin-top:12px;
-           }
-        </style>
+                #category_order .ui-state-highlight {
+                    padding: 24px;
+                    background-color: #ffffcc;
+                    border: 1px dotted #ccc;
+                    cursor: move;
+                    margin-top: 12px;
+                }
+                </style>
                 <tbody id="category_order">
                     @foreach($all_category_product as $key =>$cate_pro)
                     <tr id="{{$cate_pro->category_product_id}}">
                         <td>{{$cate_pro -> category_product_name}}</td>
                         <td>{{ $cate_pro->category_product_slug }}</td>
-                        <td><img class="img-category-product" src="public/uploads/categoryproduct/{{ $cate_pro -> category_product_image }}" alt=""></td>
+                        <td><img class="img-category-product"
+                                src="public/uploads/categoryproduct/{{ $cate_pro -> category_product_image }}" alt="">
+                        </td>
                         <!-- <td>
                             @if($cate_pro -> category_product_parent == 0)
                             Danh mục cha

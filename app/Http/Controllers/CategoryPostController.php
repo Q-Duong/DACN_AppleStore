@@ -44,6 +44,13 @@ class CategoryPostController extends Controller
     	$category_post->category_post_name = $data['category_post_name'];
         $category_post->category_post_slug = $data['category_post_slug'];
         $category_post->category_post_status = $data['category_post_status'];
+        $name = $category_post->category_post_name;
+
+        $check = CategoryPost::where('category_post_name',$name)->exists();
+        if($check)
+        {
+            return Redirect()->back()->with('error','Danh mục đã tồn tại, Vui lòng kiểm tra lại.');
+        }
         $category_post->save();
 
     	return Redirect()->back()->with('success','Thêm danh mục bài viết thành công');

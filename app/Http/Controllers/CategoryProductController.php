@@ -48,6 +48,13 @@ class CategoryProductController extends Controller
         $category_product->category_product_slug = $data['category_product_slug'];
         $category_product->category_product_status = $data['category_product_status'];
         $get_image = $request->file('category_product_image');
+        $name = $category_product->category_product_name;
+
+        $check = CategoryProduct::where('category_product_name',$name)->exists();
+        if($check)
+        {
+            return Redirect()->back()->with('error','Danh mục đã tồn tại, Vui lòng kiểm tra lại.');
+        }
       
         if($get_image){
             $get_name_image = $get_image->getClientOriginalName();
@@ -94,6 +101,13 @@ class CategoryProductController extends Controller
         $category_product->category_product_status = $data['category_product_status'];
         $category_product_image = $category_product->category_product_image;
         $get_image = $request->file('category_product_image');
+        $name = $category_product->category_product_name;
+
+        $check = CategoryProduct::where('category_product_name',$name)->exists();
+        if($check)
+        {
+            return Redirect()->back()->with('error','Danh mục đã tồn tại, Vui lòng kiểm tra lại.');
+        }
       
         if($get_image){
             $category_image_old = $category_product->category_product_image;

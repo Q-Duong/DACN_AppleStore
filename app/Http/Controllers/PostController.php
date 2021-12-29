@@ -32,7 +32,7 @@ class PostController extends Controller
     public function list_post(){
         $this->AuthLogin();
 
-        $all_post = Post::with('category_post')->orderBy('post_id','DESC')->paginate(4);
+        $all_post = Post::with('category_post')->orderBy('post_id','DESC')->get();
     	
     	return view('admin.Post.list_post')->with(compact('all_post',$all_post));
     }
@@ -51,6 +51,13 @@ class PostController extends Controller
         $post->category_post_id = $data['category_post_id'];
 
         $get_image = $request->file('post_image');
+        $name = $post->post_title;
+
+        $check = Post::where('post_title',$name)->exists();
+        if($check)
+        {
+            return Redirect()->back()->with('error','Bài đã tồn tại, Vui lòng kiểm tra lại.')->withInput();
+        }
       
         if($get_image){
             $get_name_image = $get_image->getClientOriginalName();

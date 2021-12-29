@@ -18,6 +18,8 @@
                         <div class="form-group" style="text-align:center;">
                             @if(session('success'))
                                 <div class="alert alert-success">{!! session('success') !!}</div>
+                            @elseif(session('error'))
+                                <div class="alert alert-danger">{!! session('error') !!}</div>
                             @endif
                         </div>
                         <div class="form-group {{ $errors->has('post_title') ? 'has-error' : ''}}">

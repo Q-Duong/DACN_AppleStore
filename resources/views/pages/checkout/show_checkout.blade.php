@@ -196,7 +196,7 @@ $fee_ship=0;
                         <div class="checkout__input">
                             <p>Email<span>*</span></p>
                             <input type="email" name="shipping_email" class="shipping_email"
-                                placeholder="Email (Vui lòng điền email để nhận hoá đơn VAT)">
+                                placeholder="Email (Vui lòng điền email để nhận hoá đơn VAT)" value="{{Session::get('customer_email')}}">
                         </div>
 
                         <div class="row">

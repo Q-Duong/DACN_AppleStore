@@ -42,6 +42,13 @@ class ProducerController extends Controller
         $producer = new Producer();
     	$producer->producer_name = $data['producer_name'];
         $producer->producer_status = $data['producer_status'];
+        $name = $producer->producer_name;
+
+        $check = Producer::where('producer_name',$name)->exists();
+        if($check)
+        {
+            return Redirect()->back()->with('error','Nhà cung cấp đã tồn tại, Vui lòng kiểm tra lại.');
+        }
         $producer->save();
 
     	return Redirect()->back()->with('success','Thêm nhà cung cấp thành công');

@@ -252,6 +252,7 @@ class CustomerController extends Controller
 			Session::put('customer_name',$result->customer_name);
             Session::put('customer_phone',$result->customer_phone);
             Session::put('customer_image',$result->customer_image);
+            Session::put('customer_email',$result->customer_email);
     		return Redirect::to('/checkout');
     	}else{
 			

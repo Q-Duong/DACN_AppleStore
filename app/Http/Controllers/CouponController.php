@@ -40,6 +40,13 @@ class CouponController extends Controller
     	$coupon->coupon_condition = $data['coupon_condition'];
         $coupon->coupon_date_start = $data['coupon_date_start'];
         $coupon->coupon_date_end = $data['coupon_date_end'];
+        $name = $coupon->coupon_code;
+
+        $check = Coupon::where('coupon_code',$name)->exists();
+        if($check)
+        {
+            return Redirect()->back()->with('error','Mã khuyến mãi đã tồn tại, Vui lòng kiểm tra lại.')->withInput();
+        }
     	$coupon->save();
 
         return Redirect::to('insert-coupon')->with('success','Thêm mã khuyến mãi thành công');

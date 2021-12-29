@@ -72,7 +72,13 @@ class ProductController extends Controller
         $product->producer_id = $data['producer_id'];
         $product->category_product_id = $data['category_product_id'];
         $get_image = $request->file('product_image');
+        $name = $product->product_name;
 
+        $check = Product::where('product_name',$name)->exists();
+        if($check)
+        {
+            return Redirect()->back()->with('error','Sản phẩm đã tồn tại, Vui lòng kiểm tra lại.')->withInput();
+        }
         $path = 'public/uploads/product/';
         $path_gallery = 'public/uploads/gallery/';
       
@@ -325,10 +331,10 @@ class ProductController extends Controller
         [
             'product_name' => 'required',
             'product_slug' => 'required',
-            'product_quantity' => 'required|numeric',
+            'product_quantity' => 'required|numeric|min:1',
             'product_image' => 'required',
-            'product_cost' => 'required',
-            'product_price' => 'required',
+            'product_cost' => 'required|min:1',
+            'product_price' => 'required|min:1',
             'product_desc' => 'required',
             'product_content' => 'required',
             'product_parameter' => 'required',
@@ -344,6 +350,10 @@ class ProductController extends Controller
             'product_content.required' =>'Vui lòng điền thông tin',
             'product_parameter.required' =>'Vui lòng điền thông tin',
             'product_price.numeric' =>'Vui lòng điền thông tin là số',
+            'product_quantity.numeric' =>'Vui lòng điền thông tin là số',
+            'product_quantity.min' =>'Vui lòng điền thông tin lớn hơn 0',
+            'product_cost.min' =>'Vui lòng điền thông tin lớn hơn 0',
+            'product_price.min' =>'Vui lòng điền thông tin lớn hơn 0',
         ]);
     }
     public function checkProductUpdate(Request $request){
@@ -351,7 +361,7 @@ class ProductController extends Controller
         [
             'product_name' => 'required',
             'product_slug' => 'required',
-            'product_quantity' => 'required|numeric',
+            'product_quantity' => 'required|numeric|min:1',
             'product_cost' => 'required',
             'product_price' => 'required',
             'product_desc' => 'required',
@@ -368,6 +378,7 @@ class ProductController extends Controller
             'product_content.required' =>'Vui lòng điền thông tin',
             'product_parameter.required' =>'Vui lòng điền thông tin',
             'product_quantity.numeric' =>'Vui điền thông tin là số',
+            'product_quantity.min' =>'Vui lòng điền thông tin lớn hơn 0',
         ]);
     }
 }
