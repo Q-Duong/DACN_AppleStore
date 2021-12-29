@@ -101,13 +101,7 @@ class CategoryProductController extends Controller
         $category_product->category_product_status = $data['category_product_status'];
         $category_product_image = $category_product->category_product_image;
         $get_image = $request->file('category_product_image');
-        $name = $category_product->category_product_name;
-
-        $check = CategoryProduct::where('category_product_name',$name)->exists();
-        if($check)
-        {
-            return Redirect()->back()->with('error','Danh mục đã tồn tại, Vui lòng kiểm tra lại.');
-        }
+    
       
         if($get_image){
             $category_image_old = $category_product->category_product_image;
